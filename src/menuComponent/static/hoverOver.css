@@ -1,0 +1,10 @@
+.hover-over{
+    transition: background-color 0.15s;
+    cursor: pointer;
+}
+.hover-over:hover{
+    background-color: rgb(236, 236, 236);
+}
+.hover-over:active{
+    background-color: rgb(241, 240, 240);
+}
