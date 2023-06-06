@@ -6,7 +6,7 @@ import { dateFormat, shorten } from '../tools/tools.js'
 
 function MessageList({searchFor}){
     const navigate = useNavigate();
-    const messages = useContext(MessagesContext);
+    const {messages} = useContext(MessagesContext);
     const myNickname = sessionStorage.nickname;
     const msgs = searchFor? 
         messages.filter(i=>i.theme.includes(searchFor) || i.msg.includes(searchFor)):

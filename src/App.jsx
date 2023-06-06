@@ -44,7 +44,7 @@ function App(){
     <div>
       <ToastContext.Provider value={{toastText, setToastText, showToast, setShowToast}}>
         <WsContext.Provider value={conn}>
-          <MessagesContext.Provider value={messages}>
+          <MessagesContext.Provider value={{messages, setMessages}}>
             <Routes>
               <Route path="/sign-in" element={ <SignIn/> } />
               <Route path="/" element={

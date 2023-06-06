@@ -1,15 +1,17 @@
 import { useState, useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { WsContext } from '../contexts/contexts.jsx'
+import { WsContext, MessagesContext } from '../contexts/contexts.jsx'
 
 function Header({searchFor, setSearchFor}){
     const navigate = useNavigate();
     const ws = useContext(WsContext);
+    const {setMessages} = useContext(MessagesContext);
     const nick = sessionStorage.nickname;
 
     function handleLogout(){
         delete sessionStorage.nickname;
         ws.send({type: 'logout'});
+        setMessages([]);
         navigate('/sign-in');
     }
 

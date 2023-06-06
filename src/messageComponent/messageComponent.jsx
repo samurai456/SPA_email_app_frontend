@@ -7,7 +7,7 @@ import { dateFormat } from '../tools/tools.js'
 function Message(){
     const navigate = useNavigate();
     const {id} = useParams();
-    const messages = useContext(MessagesContext);
+    const {messages} = useContext(MessagesContext);
     const nick = sessionStorage.nickname;
     const msg = messages.find(i=>i.id===id);
 
