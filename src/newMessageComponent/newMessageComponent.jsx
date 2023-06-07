@@ -1,15 +1,28 @@
 import { useNavigate, useLocation } from 'react-router-dom'
-import { useState, useContext } from 'react'
-import { WsContext, ToastContext } from '../contexts/contexts.jsx'
+import { useState, useContext, useEffect } from 'react'
+import { WsContext, ToastContext, SugNicknamesContext } from '../contexts/contexts.jsx'
+import { CustomAutoComplete } from '../autoCompleteComponent/autoCompleteComponent.jsx';
 
 function NewMessage(){
     const ws = useContext(WsContext);
+    const {sugNicknames, setSugNicknames} = useContext(SugNicknamesContext);
     const {setToastText, setShowToast} = useContext(ToastContext);
     const {state} = useLocation();
     const navigate = useNavigate();
     const [theme, setTheme] = useState('');
     const [receiver, setReceiver] = useState((state&&state.sendTo)||'');
     const [message, setMessage] = useState('');
+
+    useEffect(()=>{
+        return ()=>setSugNicknames([]);
+    }, [])
+    
+    function handleChange(e){
+        if (e.target.value){
+            ws.send({type: 'get-sug-nicknames', contain: e.target.value})
+        }
+        setReceiver(e.target.value);
+    }
 
     function handleClick(){
         if(!message || !receiver) {
@@ -39,10 +52,10 @@ function NewMessage(){
                 <label className="control-label">
                     Send to:
                 </label>
-                <input 
-                    className="form-control my-1 fs-5"
+                <CustomAutoComplete
+                    allSuggestions={sugNicknames}
                     value={receiver}
-                    onChange={e=>setReceiver(e.target.value)}
+                    onChange={handleChange}
                 />
             </div>
             <div className="col-lg-5 fs-4 row">

@@ -1,6 +1,6 @@
 class WsConnection{
     constructor(cb){
-        this.conn = new WebSocket('ws://localhost:8000');
+        this.conn = new WebSocket(`wss://${location.host}`);
         this.conn.onopen = this.onopen;
         this.conn.onclose = this.onclose;
         this.conn.onerror = this.onerror;

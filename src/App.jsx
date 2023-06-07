@@ -7,7 +7,7 @@ import { Routes, Route } from 'react-router-dom'
 import { useState, useEffect, useMemo } from 'react'
 import { CheckSignIn } from './CheckSignIn.jsx'
 import { WsConnection } from './connection/wsConnection.js'
-import { MessagesContext, WsContext, ToastContext } from './contexts/contexts.jsx'
+import { MessagesContext, WsContext, ToastContext, SugNicknamesContext } from './contexts/contexts.jsx'
 import { ToastComponent } from './toastComponent/ToastComponent.jsx'
 
 function App(){
@@ -15,9 +15,9 @@ function App(){
   const conn = useMemo(()=>new WsConnection(dispatchMessage), []);
   const [toastText, setToastText] = useState('');
   const [showToast, setShowToast] = useState(false);
+  const [sugNicknames, setSugNicknames] = useState([]);
   
   function dispatchMessage(m){
-    console.log(m.type, '<<<<')
     switch(m.type){
       case 'all-messages':
         setMessages(m.messages)
@@ -29,11 +29,13 @@ function App(){
           setShowToast(true);
         }
         return
+      case 'sug-nicknames':
+        setSugNicknames(m.sugNicknames)
+        return
     }
   }
 
   useEffect(()=>{
-    console.log('in eff');
     const nickname = sessionStorage.nickname;
     if(nickname){
       conn.send({type: 'nickname', nickname});
@@ -54,7 +56,9 @@ function App(){
               }/>
               <Route path="/new-message" element={ 
                 <CheckSignIn>
-                  <NewMessage />
+                  <SugNicknamesContext.Provider value={{ sugNicknames, setSugNicknames }}>
+                    <NewMessage />
+                  </SugNicknamesContext.Provider>
                 </CheckSignIn> 
               }/>
               <Route path="/message/:id" element={

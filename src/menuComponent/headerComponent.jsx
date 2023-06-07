@@ -10,8 +10,8 @@ function Header({searchFor, setSearchFor}){
 
     function handleLogout(){
         delete sessionStorage.nickname;
-        ws.send({type: 'logout'});
         setMessages([]);
+        ws.send({type: 'logout'});
         navigate('/sign-in');
     }
 
